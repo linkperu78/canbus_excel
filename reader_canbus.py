@@ -49,8 +49,8 @@ def save_to_csv(queue_csv, queue_led):
                 # Write the dictionary values
                 writer.writerow(dict_)
 
-                if(counter >= 3):
-                    queue_led.put("OK")
+                if(counter >= 10):
+                    queue_led.put(counter)
                     counter = 0
 
     except Exception as e:
@@ -69,7 +69,7 @@ def blink_led(qeue_led):
                 continue
             temp = qeue_led.get()
             status = not status
-            print(f"Status = {status}")
+            print(f"Status = {status} - {temp}")
 
             time.sleep(1)
     except Exception as e:
