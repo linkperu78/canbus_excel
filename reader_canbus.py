@@ -46,6 +46,7 @@ if __name__ == "__main__":
             if msg is None:
                 time.sleep(2)
                 continue
+            msg = str(msg)
             result = decoder_canbus(msg)
             print(result)
     
