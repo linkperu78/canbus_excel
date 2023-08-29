@@ -1,12 +1,9 @@
-
-
 import time
 import datetime
 import csv
 import os
 import can
 from multiprocessing import Process, Queue
-
 
 
 current_time = datetime.datetime.now()
