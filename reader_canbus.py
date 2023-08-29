@@ -8,8 +8,8 @@ from multiprocessing import Process, Queue
 
 current_time = datetime.datetime.now()
 # Format the time to the desired format
-formatted_time = current_time.strftime("%d_%b_%y_%H_%M_%S").upper()
-path_folder = "readed_data/" + str(formatted_time)
+formatted_time = current_time.strftime("%d_%b_%y_%H").upper()
+path_folder = "readed_data/" + str(formatted_time) + "H"
 csv_name = path_folder + ".csv"
 
 def decoder_canbus(can_data):
@@ -36,8 +36,8 @@ def save_to_csv(queue_csv, queue_led):
         with open(csv_name, 'a', newline='') as csvfile:
             while True:
                 if queue_csv.empty():
-                    print(f"Skipping 1 second ...")
-                    time.sleep(1)
+                    #print(f"Skipping 1 second ...")
+                    time.sleep(0.01)
                     continue
                 counter += 1
                 dict_ = queue_csv.get()
@@ -48,7 +48,7 @@ def save_to_csv(queue_csv, queue_led):
                     csv_exists = True
                 # Write the dictionary values
                 writer.writerow(dict_)
-
+                print(f"{counter}")
                 if(counter >= 10):
                     queue_led.put(counter)
                     counter = 0
@@ -65,13 +65,13 @@ def blink_led(qeue_led):
             time_actual = int(time.time()) - init_time
             #print(f"Blink_led time = {time_actual}")
             if qeue_led.empty():
-                time.sleep(1)
+                time.sleep(0.01)
                 continue
             temp = qeue_led.get()
             status = not status
             print(f"Status = {status} - {temp}")
+            #time.sleep(1)
 
-            time.sleep(1)
     except Exception as e:
         print(f"Error in blink_led():\n{e}\n")
 
