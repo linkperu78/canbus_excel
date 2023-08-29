@@ -2,14 +2,18 @@ import os
 import time
 import can
 import datetime
+import csv
 
 current_time = datetime.datetime.now()
 
 # Format the time to the desired format
 formatted_time = current_time.strftime("%d_%b_%y_%H_%M_%S").upper()
 path_folder = "/readed_data/"
-excel_name = formatted_time + ".xlsx"
-csv_name = formatted_time + ".csv"
+excel_name = path_folder + ".xlsx"
+csv_name = path_folder + ".csv"
+
+csv_exists = os.path.isfile(csv_name)
+excel_exists = os.path.isfile(excel_name)
 
 
 def decoder_canbus(can_data):
@@ -48,7 +52,15 @@ if __name__ == "__main__":
                 continue
             msg = str(msg)
             result = decoder_canbus(msg)
-            print(result)
+
+            with open(csv_name, 'a', newline='') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=result.keys())
+                if not csv_exists:
+                    # If file doesn't exist, write headers
+                    writer.writeheader()
+                    csv_exists = True
+                # Write the dictionary values
+                writer.writerow(result)
     
     except KeyboardInterrupt:
         # Stop the tasks when Ctrl+C is pressed

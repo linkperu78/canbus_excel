@@ -1,3 +1,5 @@
 # Folders 
 /my_env
 .venv/
+test*.py
+/readed_data/*
