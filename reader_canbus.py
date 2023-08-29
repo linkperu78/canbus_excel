@@ -7,14 +7,14 @@ import csv
 current_time = datetime.datetime.now()
 
 # Format the time to the desired format
-formatted_time = current_time.strftime("%d_%b_%y_%H_%M_%S").upper()
-path_folder = "/readed_data/"
-excel_name = path_folder + ".xlsx"
-csv_name = path_folder + ".csv"
+formatted_time = current_time.strftime("%d_%b_%y_%H").upper()
+path_folder = "readed_data/"
+excel_name = path_folder + str(formatted_time) + ".xlsx"
+csv_name = path_folder + str(formatted_time) + "H" + ".csv"
 
 csv_exists = os.path.isfile(csv_name)
 excel_exists = os.path.isfile(excel_name)
-
+print(f"\nPath csv = {csv_name}\n")
 
 def decoder_canbus(can_data):
     struct = [item for item in can_data.split(" ") if item]
@@ -61,6 +61,7 @@ if __name__ == "__main__":
                     csv_exists = True
                 # Write the dictionary values
                 writer.writerow(result)
+                print("data_added")
     
     except KeyboardInterrupt:
         # Stop the tasks when Ctrl+C is pressed
